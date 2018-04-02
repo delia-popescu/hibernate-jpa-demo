@@ -20,7 +20,7 @@ public class Departament {
 	
 	private String name;
 	
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="departament")
 	List<Employee> employees;
 
 	public Long getId() {
