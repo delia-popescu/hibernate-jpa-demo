@@ -1,4 +1,4 @@
-package com.db.hibernateDemo.model;
+package com.training.hibernateDemo.model;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.db.hibernateDemo.util.Status;
+import com.training.hibernateDemo.util.Status;
 
 @Entity
 @NamedQuery(name="findTasksByStatus", query="select t from Task t where t.status = :status")

@@ -1,4 +1,4 @@
-package com.db.hibernateDemo.model;
+package com.training.hibernateDemo.model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.db.hibernateDemo;
+package com.training.hibernateDemo;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -12,11 +12,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.db.hibernateDemo.model.Departament;
-import com.db.hibernateDemo.model.Employee;
-import com.db.hibernateDemo.model.Project;
-import com.db.hibernateDemo.model.Task;
-import com.db.hibernateDemo.util.Status;
+import com.training.hibernateDemo.model.Departament;
+import com.training.hibernateDemo.model.Employee;
+import com.training.hibernateDemo.model.Project;
+import com.training.hibernateDemo.model.Task;
+import com.training.hibernateDemo.util.Status;
+
 
 public class PersistenceTest {
 
@@ -27,7 +28,7 @@ public class PersistenceTest {
 		cleanupDatabase();
 		populateDatabase();
 	}
-	
+
 	@After
 	public void tearDown() {
 		em.close();
@@ -121,7 +122,8 @@ public class PersistenceTest {
 	@Test
 	public void listAllProjects() {
 		executeInEntityManagerTransaction(em, () -> {
-			List<Project> projects = (List<Project>) em.createQuery("select p from Project p order by p.id").getResultList();
+			List<Project> projects = (List<Project>) em.createQuery("select p from Project p order by p.id")
+					.getResultList();
 			System.out.println("ALL PROJECTS: " + projects);
 		});
 	}
@@ -134,7 +136,7 @@ public class PersistenceTest {
 					.getResultList();
 			em.remove(projects.get(0));
 
-			// propagate the modifications to underlying database
+			// force propagation of the modifications to underlying database
 			em.flush();
 
 			projects = (List<Project>) em.createQuery("select p from Project p").getResultList();
@@ -168,7 +170,7 @@ public class PersistenceTest {
 	public void listProjectsWithOpenTasks() {
 		executeInEntityManagerTransaction(em, () -> {
 			List<Employee> projects = em.createQuery("select p from Project p join p.tasks t where "
-					+ "t.status != com.db.hibernateDemo.util.Status.FINISHED ").getResultList();
+					+ "t.status != com.training.hibernateDemo.util.Status.FINISHED ").getResultList();
 			System.out.println("PROJECTS WITH OPEN TASKS: " + projects);
 
 		});
@@ -213,26 +215,25 @@ public class PersistenceTest {
 
 	@Test
 	public void saveAndRemoveProject() {
-		Project p4 = new Project().setName("projectName4").setDescription("projectDescription4")
-				.setStatus(Status.NEW);
+		Project p4 = new Project().setName("projectName4").setDescription("projectDescription4").setStatus(Status.NEW);
 
 		executeInEntityManagerTransaction(em, () -> {
 			em.persist(p4);
 		});
-		
+
 		Long projectId = p4.getId();
-		// NOTE THAT WE HAVE AN ID FOR THE PROJECT NOW!!
+		//we have an id for project now
 		System.out.println("PROJECT ID: " + projectId);
-		
+
 		// em is still active (close() method wasn't called, so we can open other
 		// transactions)
-		// REMOVE THE NEWLY ADDED project
+		//remove the newly added project
 		executeInEntityManagerTransaction(em, () -> {
 			em.remove(p4);
-		}); 
-		
+		});
+
 		EntityManager em1 = PersistenceManager.INSTANCE.getEntityManager();
-		// IS THE NEW PROJECT IN THE DATABASE? CAN WE LOAD IT?
+		//is the new project in the database, can we load it?
 		Project project = em1.find(Project.class, projectId);
 		System.out.println("NEW PROJECT: " + project);
 	}
@@ -261,12 +262,8 @@ public class PersistenceTest {
 				.setParameter(3, "Ion").setParameter(7, "Popescu%").getResultList();
 
 		System.out.println(employees);
-		// note that the positional parameters must not be ordered values like ?1, ?2,
-		// ?3
-		// - name and order of the positional parameters is not important
-		// THE IMPORTANT THING IS TO SET THE PARAMETERS! (NO MATTER THE ORDER IN WHICH
-		// THEY ARE SET)
-
+		// note that the positional parameters must not be ordered values like ?1, ?2, ?3
+		// name and order of the positional parameters is not important
 		@SuppressWarnings("unchecked")
 		List<Employee> employees2 = (List<Employee>) em
 				.createQuery("select e from Employee e where e.name like ?7 and e.surname like ?3")
@@ -305,7 +302,7 @@ public class PersistenceTest {
 			}
 		});
 	}
-	
+
 	private void executeInEntityManagerTransaction(EntityManager em, Runnable operation) {
 		em.getTransaction().begin();
 		operation.run();

@@ -1,4 +1,4 @@
-package com.db.hibernateDemo;
+package com.training.hibernateDemo;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

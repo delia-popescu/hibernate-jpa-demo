@@ -1,4 +1,4 @@
-package com.db.hibernateDemo.util;
+package com.training.hibernateDemo.util;
 
 public enum Status {
 	NEW,

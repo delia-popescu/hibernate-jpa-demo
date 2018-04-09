@@ -1,4 +1,4 @@
-package com.db.hibernateDemo.model;
+package com.training.hibernateDemo.model;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.db.hibernateDemo.util.Status;
+import com.training.hibernateDemo.util.Status;
 
 @Entity
 @Table(name = "project")
